@@ -19,7 +19,7 @@ public class Main extends Activity {
 
 	private Button generateStartButton(final Setup setup) {
 		Button b = new Button(this);
-		b.setText("Load " + setup.getClass().getName());
+		b.setText("Load Chip8");
 		b.setOnClickListener(new OnClickListener() {
 
 			@Override
