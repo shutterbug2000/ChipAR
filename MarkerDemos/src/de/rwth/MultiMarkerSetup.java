@@ -1,8 +1,6 @@
 package de.rwth;
 
-import javax.microedition.khronos.opengles.GL10;
-
-import com.shutterbug.chip8.chip.test;
+import com.shutterbug.chip8.chip.Chip;
 
 import geo.GeoObj;
 import gl.Color;
@@ -11,7 +9,6 @@ import gl.GL1Renderer;
 import gl.GLCamera;
 import gl.GLFactory;
 import gl.GLRenderer;
-import gl.Renderable;
 import gl.scenegraph.MeshComponent;
 import gl.scenegraph.Shape;
 import gui.GuiSetup;
@@ -21,10 +18,8 @@ import markerDetection.UnrecognizedMarkerListener;
 import system.EventManager;
 import util.Vec;
 import worldData.Obj;
-import worldData.RenderableEntity;
 import worldData.SystemUpdater;
 import worldData.Updateable;
-import worldData.Visitor;
 import worldData.World;
 import actions.Action;
 import actions.ActionBufferedCameraAR;
@@ -40,7 +35,7 @@ public class MultiMarkerSetup extends MarkerDetectionSetup {
 	private World world;
 	public static MeshComponent mesh1;
 	private MeshComponent mesh2;
-	private test chip = new test();
+	private Chip chip = new Chip();
 	private byte[] display;
 	private int displen;
 	private chipRender cr;
@@ -54,9 +49,10 @@ public class MultiMarkerSetup extends MarkerDetectionSetup {
 		displen = display.length;
 		camera = new GLCamera(new Vec(0, 0, 10));
 		Log.d("Look",camera.getPositionOnGroundWhereTheCameraIsLookingAt().toString());
-		camera.setRotation(0, 90, 270);
+//		camera.setRotation(0, 90, 270);
 		world = new World(camera);
 		mesh1 = new Shape();
+		
 
 		/*
 		mesh1.addChild(GLFactory.getInstance().newCoordinateSystem());
@@ -106,9 +102,10 @@ public class MultiMarkerSetup extends MarkerDetectionSetup {
 
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	public void _a3_registerMarkerObjects(MarkerObjectMap markerObjectMap) {
-//		this.markerObjectMap = markerObjectMap;
+		this.markerObjectMap = markerObjectMap;
 		markerObjectMap.put(new SimpleMeshPlacer(0, mesh1, camera));
 		markerObjectMap.put(new SimpleMeshPlacer(1, mesh2, camera));
 
@@ -233,16 +230,19 @@ public class MultiMarkerSetup extends MarkerDetectionSetup {
 
 class chipRender implements Updateable{
 	
-	private test chip;
+	private Chip chip;
 	private byte[] display;
 	private int displen;
+	@SuppressWarnings("unused")
 	private MeshComponent mesh2;
+	@SuppressWarnings("unused")
 	private World world;
 	private MeshComponent[] cubes;
+	@SuppressWarnings("unused")
 	private int i = 0;
 	Vec pos = new Vec(0,0,0);
 
-	public chipRender(test chip, byte[] display, int displen, MeshComponent mesh2, World world){
+	public chipRender(Chip chip, byte[] display, int displen, MeshComponent mesh2, World world){
 		this.chip = chip;
 		this.display = display;
 		this.displen = displen;
@@ -254,10 +254,12 @@ class chipRender implements Updateable{
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean update(float arg0, Updateable arg1) {
 //		Log.d("hi", "LOL");
 		chip.run();
+		MultiMarkerSetup.mesh1.clearChildren();
 		//if(i % 5 == 1)
 		//MultiMarkerSetup.mesh1.clearChildren();
 		for(int i = 0; i < displen; i++) {
@@ -273,19 +275,17 @@ class chipRender implements Updateable{
 			} else{
 				int x = (i % 64);
 				int y = (int)Math.floor(i / 64);
-				pos.setTo(x,y,-200);
+				pos.setTo(x, -200 ,64 - y - 64);
 				cubes[i].setPosition(pos);
 				cubes[i].setColor(Color.red());
-				MultiMarkerSetup.mesh1.remove(cubes[i]);
 				MultiMarkerSetup.mesh1.addChild(cubes[i]);
-//				MultiMarkerSetup.markerObjectMap.put(new SimpleMeshPlacer(0, MultiMarkerSetup.mesh1, MultiMarkerSetup.camera));
+				MultiMarkerSetup.markerObjectMap.put(new SimpleMeshPlacer(0, MultiMarkerSetup.mesh1, MultiMarkerSetup.camera));
 //				batch.begin();
 //				batch.draw(w2, (x * 10), (y * 10), 10, 10);
 //				time = (float)(time + .0001);
 //				shader.setUniformf("time", time);
 //				batch.end();
 			}
-			i++;
 			}
 
 		return true;

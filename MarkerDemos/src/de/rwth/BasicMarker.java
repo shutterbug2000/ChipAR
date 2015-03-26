@@ -4,7 +4,6 @@ import util.Vec;
 import android.opengl.Matrix;
 import gl.GLCamera;
 import gl.MarkerObject;
-import gl.scenegraph.MeshComponent;
 
 public abstract class BasicMarker implements MarkerObject {
 

@@ -2,7 +2,6 @@ package de.rwth;
 
 import util.Vec;
 import gl.GLCamera;
-import gl.MarkerObject;
 import gl.scenegraph.MeshComponent;
 
 public class SimpleMeshPlacer extends BasicMarker {

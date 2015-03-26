@@ -19,9 +19,7 @@ import util.Vec;
 import worldData.Obj;
 import worldData.SystemUpdater;
 import worldData.World;
-import actions.ActionBufferedCameraAR;
 import android.app.Activity;
-
 import commands.system.CommandPlaySound;
 
 public class ExampleMarkerRenderSetup extends MarkerDetectionSetup {
@@ -55,6 +53,7 @@ public class ExampleMarkerRenderSetup extends MarkerDetectionSetup {
 		// initWorld(world);
 	}
 
+	@SuppressWarnings("unused")
 	private synchronized void initWorld(World world) {
 
 		world.add(GLFactory.getInstance().newSolarSystem(new Vec(0, 0, 5)));
@@ -91,6 +90,7 @@ public class ExampleMarkerRenderSetup extends MarkerDetectionSetup {
 		world.add(grid);
 
 		Obj treangle = new Obj();
+		@SuppressWarnings("deprecation")
 		MeshComponent treangleMesh = GLFactory.getInstance().newTexturedSquare(
 				"worldIconId",
 				IO.loadBitmapFromId(myTargetActivity, R.drawable.icon));
